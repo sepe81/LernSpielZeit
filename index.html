@@ -1,76 +1,77 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LernSpielZeit</title>
-    <link rel="stylesheet" href="style.css">
-    <meta name="theme-color" content="#5AA02C">
+    <link rel="stylesheet" href="style.css" />
+    <meta name="theme-color" content="#5AA02C" />
     <script src="app.js" defer></script>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <header>
-            <h1>LernSpielZeit</h1>
-        </header>
+      <header>
+        <h1>LernSpielZeit</h1>
+      </header>
 
+      <main>
         <section id="balance-section" class="card">
-            <h2>Aktuelles Guthaben</h2>
-            <div id="balance-display" class="balance-timer">00:00:00</div>
-            <div id="negative-warning" class="warning hidden">⚠️ Du hast Schulden! Erst lernen, dann spielen.</div>
+          <h2>Aktuelles Guthaben</h2>
+          <div id="balance-display" class="balance-timer">00:00:00</div>
+          <div id="negative-warning" class="warning hidden">⚠️ Du hast Schulden! Erst lernen, dann spielen.</div>
         </section>
 
         <section id="controls-section" class="controls">
-            <button id="btn-show-study" class="btn-primary">Lernzeit starten</button>
-            <button id="btn-show-play" class="btn-secondary">Spielzeit starten</button>
-            <button id="btn-show-history" class="btn-info">Historie anzeigen</button>
+          <button id="btn-show-study" class="btn-primary">Lernzeit starten</button>
+          <button id="btn-show-play" class="btn-secondary">Spielzeit starten</button>
+          <button id="btn-show-history" class="btn-info">Historie anzeigen</button>
         </section>
 
         <!-- Study Timer View -->
         <section id="study-view" class="view hidden">
-            <div class="card">
-                <h2>Lernen 📚</h2>
-                <div id="study-timer" class="timer">00:00:00</div>
-                <div class="actions">
-                    <button id="btn-stop-study" class="btn-danger">Stopp & Speichern</button>
-                    <button id="btn-cancel-study" class="btn-light">Abbrechen</button>
-                </div>
+          <div class="card">
+            <h2>Lernen 📚</h2>
+            <div id="study-timer" class="timer">00:00:00</div>
+            <div class="actions">
+              <button id="btn-stop-study" class="btn-danger">Stopp & Speichern</button>
+              <button id="btn-cancel-study" class="btn-light">Abbrechen</button>
             </div>
+          </div>
         </section>
 
         <!-- Play Timer View -->
         <section id="play-view" class="view hidden">
-            <div class="card">
-                <h2>Spielen 🎮</h2>
-                <div id="play-timer" class="timer">00:00:00</div>
-                <div id="daily-limit-info" class="info">Heute noch verfügbar: <span id="remaining-daily">60:00</span></div>
-                <div class="actions">
-                    <button id="btn-stop-play" class="btn-danger">Stopp & Abziehen</button>
-                    <button id="btn-cancel-play" class="btn-light">Abbrechen</button>
-                </div>
+          <div class="card">
+            <h2>Spielen 🎮</h2>
+            <div id="play-timer" class="timer">00:00:00</div>
+            <div id="daily-limit-info" class="info">Heute noch verfügbar: <span id="remaining-daily">60:00</span></div>
+            <div class="actions">
+              <button id="btn-stop-play" class="btn-danger">Stopp & Abziehen</button>
+              <button id="btn-cancel-play" class="btn-light">Abbrechen</button>
             </div>
+          </div>
         </section>
 
         <!-- History View -->
         <section id="history-view" class="view hidden">
-            <div class="card">
-                <div class="history-container">
-                    <table id="history-table">
-                        <thead>
-                            <tr>
-                                <th>Typ</th>
-                                <th>Dauer</th>
-                                <th>Datum</th>
-                            </tr>
-                        </thead>
-                        <tbody id="history-body">
-                            <!-- Rows will be added here -->
-                        </tbody>
-                    </table>
-                </div>
+          <div class="card">
+            <div class="history-container">
+              <table id="history-table">
+                <thead>
+                  <tr>
+                    <th>Typ</th>
+                    <th>Dauer</th>
+                    <th>Datum</th>
+                  </tr>
+                </thead>
+                <tbody id="history-body">
+                  <!-- Rows will be added here -->
+                </tbody>
+              </table>
             </div>
+          </div>
         </section>
+      </main>
     </div>
-
-</body>
+  </body>
 </html>
