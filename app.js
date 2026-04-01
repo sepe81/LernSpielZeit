@@ -10,20 +10,25 @@ let timerSeconds = 0;
 let timerInterval = null;
 let startTime = null;
 
-// DOM Elements
-const balanceDisplay = document.getElementById('balance-display');
-const negativeWarning = document.getElementById('negative-warning');
-const studyTimerDisplay = document.getElementById('study-timer');
-const playTimerDisplay = document.getElementById('play-timer');
-const remainingDailyDisplay = document.getElementById('remaining-daily');
-const historyBody = document.getElementById('history-body');
-const btnShowHistory = document.getElementById('btn-show-history');
-
-// Views
-const studyView = document.getElementById('study-view');
-const playView = document.getElementById('play-view');
-const historyView = document.getElementById('history-view');
-const controlsSection = document.getElementById('controls-section');
+// DOM Elements (Cached)
+const elements = {
+    balanceDisplay: document.getElementById('balance-display'),
+    negativeWarning: document.getElementById('negative-warning'),
+    studyTimerDisplay: document.getElementById('study-timer'),
+    playTimerDisplay: document.getElementById('play-timer'),
+    remainingDailyDisplay: document.getElementById('remaining-daily'),
+    historyBody: document.getElementById('history-body'),
+    btnShowHistory: document.getElementById('btn-show-history'),
+    studyView: document.getElementById('study-view'),
+    playView: document.getElementById('play-view'),
+    historyView: document.getElementById('history-view'),
+    btnShowStudy: document.getElementById('btn-show-study'),
+    btnShowPlay: document.getElementById('btn-show-play'),
+    btnStopStudy: document.getElementById('btn-stop-study'),
+    btnCancelStudy: document.getElementById('btn-cancel-study'),
+    btnStopPlay: document.getElementById('btn-stop-play'),
+    btnCancelPlay: document.getElementById('btn-cancel-play')
+};
 
 // Initial Load
 function init() {
@@ -31,6 +36,10 @@ function init() {
     if (savedData) {
         state = JSON.parse(savedData);
     }
+
+    // Register Event Listeners once
+    setupEventListeners();
+
     updateUI();
 }
 
@@ -46,11 +55,11 @@ function formatTime(totalSeconds) {
     const h = Math.floor(absSeconds / 3600);
     const m = Math.floor((absSeconds % 3600) / 60);
     const s = absSeconds % 60;
-    
+
     const timeStr = [h, m, s]
         .map(v => v < 10 ? "0" + v : v)
         .join(":");
-    
+
     return (isNegative ? "-" : "") + timeStr;
 }
 
@@ -62,77 +71,81 @@ function getPlayTimeToday() {
 }
 
 function updateUI() {
-    balanceDisplay.textContent = formatTime(state.balance);
-    
+    elements.balanceDisplay.textContent = formatTime(state.balance);
+
     if (state.balance < 0) {
-        negativeWarning.classList.remove('hidden');
+        elements.negativeWarning.classList.remove('hidden');
     } else {
-        negativeWarning.classList.add('hidden');
+        elements.negativeWarning.classList.add('hidden');
     }
-    
+
     // Daily remaining
     const playToday = getPlayTimeToday();
     const currentPlaySeconds = activeTimer === 'play' ? timerSeconds : 0;
     const remaining = Math.max(0, state.dailyLimit - (playToday + currentPlaySeconds));
-    remainingDailyDisplay.textContent = formatTime(remaining).replace(/^-/, '');
-    
+    elements.remainingDailyDisplay.textContent = formatTime(remaining).replace(/^-/, '');
+
     // Auto-stop if limit reached
     if (activeTimer === 'play' && remaining <= 0) {
         stopTimer(true);
         showView(null);
         alert("Tageslimit erreicht! Zeit für heute ist um.");
     }
-    
+
     // Only update history table if it's currently visible
-    if (!historyView.classList.contains('hidden')) {
+    if (!elements.historyView.classList.contains('hidden')) {
         updateHistoryTable();
     }
 }
 
 function updateHistoryTable() {
-    historyBody.innerHTML = '';
+    elements.historyBody.innerHTML = '';
+
+    // Use a fragment for batch DOM updates
+    const fragment = document.createDocumentFragment();
+
     [...state.history].reverse().forEach(entry => {
         const row = document.createElement('tr');
-        const date = new Date(entry.start).toLocaleString('de-DE', { 
-            day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' 
+        const date = new Date(entry.start).toLocaleString('de-DE', {
+            day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'
         });
-        
+
         row.innerHTML = `
             <td>${entry.type === 'study' ? '📚 Lernen' : '🎮 Spielen'}</td>
             <td>${formatTime(entry.seconds).replace(/^-/, '')}</td>
             <td>${date}</td>
         `;
-        historyBody.appendChild(row);
+        fragment.appendChild(row);
     });
+
+    elements.historyBody.appendChild(fragment);
 }
 
 // Timer Logic
 function startTimer(type) {
     if (timerInterval) stopTimer(false); // Should not happen with view logic but for safety
-    
+
     activeTimer = type;
     timerSeconds = 0;
     startTime = new Date().toISOString();
-    
-    const display = type === 'study' ? studyTimerDisplay : playTimerDisplay;
+
+    const display = type === 'study' ? elements.studyTimerDisplay : elements.playTimerDisplay;
     display.textContent = "00:00:00";
-    
+
     timerInterval = setInterval(() => {
         timerSeconds++;
         display.textContent = formatTime(timerSeconds).replace(/^-/, '');
-        
+
         if (activeTimer === 'play') {
             updateUI();
         }
     }, 1000);
-    
-    // UI feedback (Buttons are now always visible in their view)
 }
 
 function stopTimer(shouldSave) {
     clearInterval(timerInterval);
     timerInterval = null;
-    
+
     if (shouldSave && timerSeconds > 0) {
         const endTime = new Date().toISOString();
         const entry = {
@@ -141,77 +154,81 @@ function stopTimer(shouldSave) {
             start: startTime,
             end: endTime
         };
-        
+
         state.history.push(entry);
-        
+
         if (activeTimer === 'study') {
             state.balance += timerSeconds;
         } else {
             state.balance -= timerSeconds;
         }
-        
+
         saveState();
         updateUI();
     }
-    
+
     // Reset state
     activeTimer = null;
 }
 
 // View Switching
 function showView(view) {
-    studyView.classList.add('hidden');
-    playView.classList.add('hidden');
+    elements.studyView.classList.add('hidden');
+    elements.playView.classList.add('hidden');
     if (view) {
         view.classList.remove('hidden');
     }
 }
 
 function toggleHistory() {
-    const isShowing = !historyView.classList.contains('hidden');
-    
+    const isShowing = !elements.historyView.classList.contains('hidden');
+
     if (isShowing) {
-        historyView.classList.add('hidden');
-        btnShowHistory.textContent = 'Historie anzeigen';
+        elements.historyView.classList.add('hidden');
+        elements.btnShowHistory.textContent = 'Historie anzeigen';
     } else {
-        historyView.classList.remove('hidden');
-        btnShowHistory.textContent = 'Historie ausblenden';
+        elements.historyView.classList.remove('hidden');
+        elements.btnShowHistory.textContent = 'Historie ausblenden';
         updateHistoryTable();
     }
 }
 
 // Event Listeners
-document.getElementById('btn-show-study').addEventListener('click', () => {
-    showView(studyView);
-    startTimer('study');
-});
+function setupEventListeners() {
+    elements.btnShowStudy.addEventListener('click', () => {
+        showView(elements.studyView);
+        startTimer('study');
+    });
 
-document.getElementById('btn-show-play').addEventListener('click', () => {
-    showView(playView);
-    startTimer('play');
-});
+    elements.btnShowPlay.addEventListener('click', () => {
+        showView(elements.playView);
+        startTimer('play');
+    });
 
-btnShowHistory.addEventListener('click', () => {
-    toggleHistory();
-});
+    elements.btnShowHistory.addEventListener('click', () => {
+        toggleHistory();
+    });
 
-document.getElementById('btn-stop-study').addEventListener('click', () => {
-    stopTimer(true);
-    showView(null);
-});
-document.getElementById('btn-cancel-study').addEventListener('click', () => {
-    stopTimer(false);
-    showView(null);
-});
+    elements.btnStopStudy.addEventListener('click', () => {
+        stopTimer(true);
+        showView(null);
+    });
 
-document.getElementById('btn-stop-play').addEventListener('click', () => {
-    stopTimer(true);
-    showView(null);
-});
-document.getElementById('btn-cancel-play').addEventListener('click', () => {
-    stopTimer(false);
-    showView(null);
-});
+    elements.btnCancelStudy.addEventListener('click', () => {
+        stopTimer(false);
+        showView(null);
+    });
+
+    elements.btnStopPlay.addEventListener('click', () => {
+        stopTimer(true);
+        showView(null);
+    });
+
+    elements.btnCancelPlay.addEventListener('click', () => {
+        stopTimer(false);
+        showView(null);
+    });
+}
 
 // Start the app
 init();
