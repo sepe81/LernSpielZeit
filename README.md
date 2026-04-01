@@ -1,4 +1,6 @@
-# Lernzeit-Spielzeit-Tracker (Browser-App)
+# LernSpielZeit
+
+**Verwandle Lernzeit in Spielzeit – mit System und im Minecraft-Style.**
 
 ## Ziel
 
@@ -56,7 +58,7 @@ Die App soll:
 - **Technologien:**
   - HTML, CSS, JavaScript
 - **Design:**
-  - Einfach und kindgerecht
+  - Einfaches, Minecraft-inspiriertes Design (Block-Optik)
   - Klare Buttons und Anzeigen
 
 ### 2. Backend
