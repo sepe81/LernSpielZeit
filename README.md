@@ -34,9 +34,7 @@ Die App soll:
   - Lernzeit wird in Sekunden addiert
   - Spielzeit wird in Sekunden subtrahiert
   - Das Guthaben kann negativ werden — in diesem Fall wird eine sichtbare Warnung angezeigt
-- **Verhältnis:**
-  - Standardmäßig 1:1 (1 Sekunde Lernen = 1 Sekunde Spielzeit)
-  - Optional: Verhältnis anpassbar (z. B. 2:1)
+  - Verhältnis 1:1 (1 Sekunde Lernen = 1 Sekunde Spielzeit)
 - **Maximale Spielzeit pro Tag:**
   - Fest hinterlegt: maximal 3600 Sekunden (= 60 Minuten) pro Tag
 - **Timer-Exklusivität:**
@@ -75,7 +73,6 @@ Die Anzeige erfolgt umgerechnet in `hh:mm:ss`.
 ```json
 {
   "balance": 3720,
-  "ratio": 1,
   "dailyLimit": 3600,
   "history": [
     {
@@ -99,7 +96,6 @@ Die Anzeige erfolgt umgerechnet in `hh:mm:ss`.
 | Feld         | Typ      | Beschreibung                                               |
 | ------------ | -------- | ---------------------------------------------------------- |
 | `balance`    | `number` | Aktuelles Guthaben in Sekunden (kann negativ sein)         |
-| `ratio`      | `number` | Lernzeit:Spielzeit-Verhältnis (z. B. `1` = 1:1, `2` = 2:1) |
 | `dailyLimit` | `number` | Maximale Spielzeit pro Tag in Sekunden (fest: 3600)        |
 | `history`    | `array`  | Chronologische Liste aller Lern- und Spielzeit-Einträge    |
 
