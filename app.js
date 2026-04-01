@@ -61,10 +61,17 @@ function formatTime(totalSeconds) {
   return (isNegative ? "-" : "") + timeStr;
 }
 
+function getLocalDateString(date) {
+  return new Date(date).toLocaleDateString("sv");
+}
+
 function getPlayTimeToday() {
-  const today = new Date().toISOString().split("T")[0];
+  const today = getLocalDateString(new Date());
   return state.history
-    .filter((entry) => entry.type === "play" && entry.start.startsWith(today))
+    .filter(
+      (entry) =>
+        entry.type === "play" && getLocalDateString(entry.start) === today,
+    )
     .reduce((sum, entry) => sum + entry.seconds, 0);
 }
 
