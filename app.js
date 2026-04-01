@@ -147,10 +147,13 @@ function stopTimer(shouldSave) {
   clearInterval(timerInterval);
   timerInterval = null;
 
+  const type = activeTimer;
+  activeTimer = null;
+
   if (shouldSave && timerSeconds > 0) {
     const endTime = new Date().toISOString();
     const entry = {
-      type: activeTimer,
+      type: type,
       seconds: timerSeconds,
       start: startTime,
       end: endTime,
@@ -158,7 +161,7 @@ function stopTimer(shouldSave) {
 
     state.history.push(entry);
 
-    if (activeTimer === "study") {
+    if (type === "study") {
       state.balance += timerSeconds;
     } else {
       state.balance -= timerSeconds;
@@ -167,9 +170,6 @@ function stopTimer(shouldSave) {
     saveState();
     updateUI();
   }
-
-  // Reset state
-  activeTimer = null;
 }
 
 // View Switching
