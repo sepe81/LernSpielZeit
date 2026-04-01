@@ -1,155 +1,191 @@
 :root {
-    /* Minecraft-inspired palette: Grass, Dirt, Stone, Wood */
-    --primary-color: #5AA02C;    /* Grass Green */
-    --secondary-color: #8B5E3C;  /* Wood Brown */
-    --success-color: #3F7614;    /* Dark Grass */
-    --danger-color: #A02C2C;     /* Redstone/TNT Red */
-    --info-color: #727272;       /* Stone Gray */
-    --background-color: #BF9B6F; /* Dirt/Sand Brown */
-    --card-background: #C6C6C6;  /* UI Gray */
-    --text-color: #1A1A1A;
-    --warning-color: #FFD800;    /* Gold */
-    --border-width: 4px;
+  /* Minecraft-inspired palette: Grass, Dirt, Stone, Wood */
+  --primary-color: #5aa02c; /* Grass Green */
+  --secondary-color: #8b5e3c; /* Wood Brown */
+  --success-color: #3f7614; /* Dark Grass */
+  --danger-color: #a02c2c; /* Redstone/TNT Red */
+  --info-color: #727272; /* Stone Gray */
+  --background-color: #bf9b6f; /* Dirt/Sand Brown */
+  --card-background: #c6c6c6; /* UI Gray */
+  --text-color: #1a1a1a;
+  --warning-color: #ffd800; /* Gold */
+  --border-width: 4px;
 }
 
 body {
-    font-family: 'Courier New', Courier, monospace; /* More blocky/pixel feel */
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  font-family: "Courier New", Courier, monospace; /* More blocky/pixel feel */
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 }
 
 .container {
-    width: 95%;
-    max-width: 500px;
-    text-align: center;
+  width: 95%;
+  max-width: 500px;
+  text-align: center;
 }
 
 header h1 {
-    color: #FFF;
-    text-shadow: 2px 2px 0 #000;
-    margin-bottom: 30px;
+  color: #fff;
+  text-shadow: 2px 2px 0 #000;
+  margin-bottom: 30px;
 }
 
 .card {
-    background: var(--card-background);
-    padding: 20px;
-    border: var(--border-width) solid #000;
-    box-shadow: inset -4px -4px 0px 0px #555, inset 4px 4px 0px 0px #FFF;
-    margin-bottom: 20px;
+  background: var(--card-background);
+  padding: 20px;
+  border: var(--border-width) solid #000;
+  box-shadow:
+    inset -4px -4px 0px 0px #555,
+    inset 4px 4px 0px 0px #fff;
+  margin-bottom: 20px;
 }
 
 .balance-timer {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin: 10px 0;
-    background: #000;
-    color: #0F0; /* Retro green screen look for balance */
-    padding: 10px;
-    border: 2px solid #555;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 10px 0;
+  background: #000;
+  color: #0f0; /* Retro green screen look for balance */
+  padding: 10px;
+  border: 2px solid #555;
 }
 
 .timer {
-    font-size: 3.5rem;
-    font-weight: bold;
-    margin: 20px 0;
-    background: #000;
-    color: #FFF;
-    padding: 10px;
-    border: 2px solid #555;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin: 20px 0;
+  background: #000;
+  color: #fff;
+  padding: 10px;
+  border: 2px solid #555;
 }
 
 .warning {
-    background-color: var(--warning-color);
-    border: 2px solid #000;
-    padding: 10px;
-    font-weight: bold;
-    margin-top: 10px;
+  background-color: var(--warning-color);
+  border: 2px solid #000;
+  padding: 10px;
+  font-weight: bold;
+  margin-top: 10px;
 }
 
 .hidden {
-    display: none !important;
+  display: none !important;
 }
 
 .controls {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
 }
 
-.controls button, .actions button {
-    padding: 15px;
-    font-size: 0.9rem;
-    cursor: pointer;
-    border: var(--border-width) solid #000;
-    font-family: 'Courier New', Courier, monospace;
-    font-weight: bold;
-    text-transform: uppercase;
-    box-shadow: inset -4px -4px 0px 0px rgba(0,0,0,0.2), inset 4px 4px 0px 0px rgba(255,255,255,0.2);
-    transition: transform 0.1s;
+.controls button,
+.actions button {
+  padding: 15px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: var(--border-width) solid #000;
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow:
+    inset -4px -4px 0px 0px rgba(0, 0, 0, 0.2),
+    inset 4px 4px 0px 0px rgba(255, 255, 255, 0.2);
+  transition: transform 0.1s;
 }
 
 #btn-show-history {
-    grid-column: span 2;
+  grid-column: span 2;
 }
 
 button:active {
-    transform: translateY(2px);
-    box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.2), inset -4px -4px 0px 0px rgba(255,255,255,0.2);
+  transform: translateY(2px);
+  box-shadow:
+    inset 4px 4px 0px 0px rgba(0, 0, 0, 0.2),
+    inset -4px -4px 0px 0px rgba(255, 255, 255, 0.2);
 }
 
-.btn-primary { background-color: var(--primary-color); color: white; }
-.btn-secondary { background-color: var(--secondary-color); color: white; }
-.btn-info { background-color: var(--info-color); color: white; }
-.btn-success { background-color: var(--success-color); color: white; }
-.btn-danger { background-color: var(--danger-color); color: white; }
-.btn-light { background-color: #AAA; color: #000; }
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+.btn-secondary {
+  background-color: var(--secondary-color);
+  color: white;
+}
+.btn-info {
+  background-color: var(--info-color);
+  color: white;
+}
+.btn-success {
+  background-color: var(--success-color);
+  color: white;
+}
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+.btn-light {
+  background-color: #aaa;
+  color: #000;
+}
 
 .info {
-    margin-bottom: 30px;
-    font-size: 1.1rem;
-    font-weight: bold;
+  margin-bottom: 30px;
+  font-size: 1.1rem;
+  font-weight: bold;
 }
 
 .actions {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 
 .history-container {
-    max-height: 250px;
-    overflow-y: auto;
-    margin: 10px 0;
-    border: 2px solid #000;
-    background: #FFF;
+  max-height: 250px;
+  overflow-y: auto;
+  margin: 10px 0;
+  border: 2px solid #000;
+  background: #fff;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+  width: 100%;
+  border-collapse: collapse;
 }
 
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 2px solid #DDD;
+th,
+td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 2px solid #ddd;
 }
 
 th {
-    background: #888;
-    color: #FFF;
+  background: #888;
+  color: #fff;
 }
 
 /* Study color theme */
-#study-view .card { border-color: var(--success-color); }
-#study-view h2 { color: var(--success-color); text-shadow: 1px 1px 0 #000; }
+#study-view .card {
+  border-color: var(--success-color);
+}
+#study-view h2 {
+  color: var(--success-color);
+  text-shadow: 1px 1px 0 #000;
+}
 
 /* Play color theme */
-#play-view .card { border-color: var(--secondary-color); }
-#play-view h2 { color: var(--secondary-color); text-shadow: 1px 1px 0 #000; }
+#play-view .card {
+  border-color: var(--secondary-color);
+}
+#play-view h2 {
+  color: var(--secondary-color);
+  text-shadow: 1px 1px 0 #000;
+}
