@@ -17,7 +17,7 @@ Die App soll:
 
 - **Startseite:**
   - Übersicht über das aktuelle Guthaben (Anzeige in Stunden:Minuten:Sekunden)
-  - Buttons: "Lernzeit starten", "Spielzeit starten", "Guthaben anzeigen"
+  - Buttons: "Lernzeit starten", "Spielzeit starten", "Historie anzeigen"
 - **Lernzeit-Timer:**
   - Stoppuhr zur sekundengenauen Erfassung der Lernzeit
   - Button zum Speichern der Lernzeit
