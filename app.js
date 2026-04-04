@@ -6,9 +6,9 @@ let state = {
 };
 
 let activeTimer = null;
-let timerSeconds = 0;
 let timerInterval = null;
 let startTime = null;
+let startMs = null;
 
 // DOM Elements (Cached)
 const elements = {
@@ -86,7 +86,7 @@ function updateUI() {
 
   // Daily remaining
   const playToday = getPlayTimeToday();
-  const currentPlaySeconds = activeTimer === "play" ? timerSeconds : 0;
+  const currentPlaySeconds = activeTimer === "play" ? Math.round((Date.now() - startMs) / 1000) : 0;
   const remaining = Math.max(0, state.dailyLimit - (playToday + currentPlaySeconds));
   elements.remainingDailyDisplay.textContent = formatTime(remaining).replace(/^-/, "");
 
@@ -130,48 +130,63 @@ function updateHistoryTable() {
 }
 
 // Timer Logic
+function refreshTimerDisplay() {
+  if (startMs === null) return;
+  const elapsed = Math.round((Date.now() - startMs) / 1000);
+  const display = activeTimer === "study" ? elements.studyTimerDisplay : elements.playTimerDisplay;
+  display.textContent = formatTime(elapsed).replace(/^-/, "");
+  if (activeTimer === "play") {
+    updateUI();
+  }
+}
+
 function startTimer(type) {
   if (timerInterval) stopTimer(false); // Should not happen with view logic but for safety
 
   activeTimer = type;
-  timerSeconds = 0;
-  startTime = new Date().toISOString();
+  startMs = Date.now();
+  startTime = new Date(startMs).toISOString();
 
   const display = type === "study" ? elements.studyTimerDisplay : elements.playTimerDisplay;
   display.textContent = "00:00:00";
 
-  timerInterval = setInterval(() => {
-    timerSeconds++;
-    display.textContent = formatTime(timerSeconds).replace(/^-/, "");
+  timerInterval = setInterval(refreshTimerDisplay, 1000);
+  document.addEventListener("visibilitychange", onVisibilityChange);
+}
 
-    if (activeTimer === "play") {
-      updateUI();
-    }
-  }, 1000);
+function onVisibilityChange() {
+  if (document.visibilityState === "visible" && timerInterval && startMs !== null) {
+    refreshTimerDisplay();
+  }
 }
 
 function stopTimer(shouldSave) {
   clearInterval(timerInterval);
   timerInterval = null;
+  document.removeEventListener("visibilitychange", onVisibilityChange);
 
   const type = activeTimer;
+  const savedStartMs = startMs;
   activeTimer = null;
+  startMs = null;
+  startTime = null;
 
-  if (shouldSave && timerSeconds > 0) {
+  if (shouldSave && savedStartMs !== null) {
+    const elapsed = Math.round((Date.now() - savedStartMs) / 1000);
     const endTime = new Date().toISOString();
     const entry = {
       type: type,
-      seconds: timerSeconds,
-      start: startTime,
+      seconds: elapsed,
+      start: new Date(savedStartMs).toISOString(),
       end: endTime,
     };
 
     state.history.push(entry);
 
     if (type === "study") {
-      state.balance += timerSeconds;
+      state.balance += elapsed;
     } else {
-      state.balance -= timerSeconds;
+      state.balance -= elapsed;
     }
 
     saveState();
